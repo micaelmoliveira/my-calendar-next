@@ -15,8 +15,8 @@ model User {
   avatar_url String?
   created_at DateTime @default(now())
 
-  Account Account[]
-  Session Session[]
+  accounts Account[]
+  sessions Session[]
 
   @@map("users")
 }
