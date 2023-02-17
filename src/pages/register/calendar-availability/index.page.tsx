@@ -1,3 +1,4 @@
+import { convertTimeStringToMinutes } from "@/utils/convert-time-string-to-minutes";
 import { getWeekDays } from "@/utils/get-week-days";
 import { zodResolver } from "@hookform/resolvers/zod";
 import {
@@ -37,12 +38,35 @@ const CalendarAvailabilityFormSchema = z.object({
     )
     .refine((availabilities) => availabilities.length > 0, {
       message: "Você precisa selecionar ao mesmo um dia da semana!",
-    }),
+    })
+    .transform((availabilities) => {
+      return availabilities.map((availability) => {
+        return {
+          weekDay: availability.weekDay,
+          startTimeInMinutes: convertTimeStringToMinutes(
+            availability.startTime
+          ),
+          endTimeInMinutes: convertTimeStringToMinutes(availability.endTime),
+        };
+      });
+    })
+    .refine(
+      (availabilities) => {
+        return availabilities.every(
+          (availability) =>
+            availability.endTimeInMinutes - 60 >=
+            availability.startTimeInMinutes
+        );
+      },
+      {
+        message:
+          "O horário de término deve ser pelo menos 1 hora distante do início.",
+      }
+    ),
 });
 
-type CalendarAvailabilityFormData = z.infer<
-  typeof CalendarAvailabilityFormSchema
->;
+type CalendarAvailabilityFormInput = z.input<typeof CalendarAvailabilityFormSchema>
+type CalendarAvailabilityFormOutput = z.output<typeof CalendarAvailabilityFormSchema>
 
 export default function CalendarAvailability() {
   const {
@@ -51,7 +75,7 @@ export default function CalendarAvailability() {
     control,
     watch,
     formState: { isSubmitting, errors },
-  } = useForm({
+  } = useForm<CalendarAvailabilityFormInput>({
     resolver: zodResolver(CalendarAvailabilityFormSchema),
     defaultValues: {
       availability: [
@@ -75,10 +99,10 @@ export default function CalendarAvailability() {
 
   const availability = watch("availability");
 
-  async function handleSetCalendarAvailability(
-    data: CalendarAvailabilityFormData
-  ) {
-    console.log(data);
+  async function handleSetCalendarAvailability(data: any) {
+    const outputData = data as CalendarAvailabilityFormOutput
+
+    console.log(outputData);
   }
 
   return (
