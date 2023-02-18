@@ -47,8 +47,8 @@ export function PrismaAdapter(
         },
       });
 
-      if(!user) {
-        return null
+      if (!user) {
+        return null;
       }
 
       return {
@@ -68,8 +68,8 @@ export function PrismaAdapter(
         },
       });
 
-      if(!user) {
-        return null
+      if (!user) {
+        return null;
       }
 
       return {
@@ -168,7 +168,7 @@ export function PrismaAdapter(
     },
 
     async getSessionAndUser(sessionToken) {
-       const prismaSession = await prisma.session.findUnique({
+      const prismaSession = await prisma.session.findUnique({
         where: {
           session_token: sessionToken,
         },
@@ -177,11 +177,11 @@ export function PrismaAdapter(
         },
       });
 
-      if(!prismaSession) {
-        return null
+      if (!prismaSession) {
+        return null;
       }
 
-      const { user, ...session } = prismaSession
+      const { user, ...session } = prismaSession;
 
       return {
         session: {

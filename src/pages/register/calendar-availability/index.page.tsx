@@ -1,3 +1,4 @@
+import { api } from "@/lib/axios";
 import { convertTimeStringToMinutes } from "@/utils/convert-time-string-to-minutes";
 import { getWeekDays } from "@/utils/get-week-days";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -100,9 +101,11 @@ export default function CalendarAvailability() {
   const availability = watch("availability");
 
   async function handleSetCalendarAvailability(data: any) {
-    const outputData = data as CalendarAvailabilityFormOutput
+    const { availability } = data as CalendarAvailabilityFormOutput
 
-    console.log(outputData);
+    await api.post('/users/availabilities', {
+      availability
+    })
   }
 
   return (

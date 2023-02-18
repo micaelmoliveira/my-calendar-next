@@ -16,6 +16,10 @@ export default function Calendar() {
     await signIn("google", { callbackUrl: "/register/calendar" });
   }
 
+  function handleNextPage() {
+    router.push('/register/calendar-availability')
+  }
+
   return (
     <Container>
       <Header>
@@ -55,7 +59,7 @@ export default function Calendar() {
           </AuthError>
         )}
 
-        <Button type="submit" disabled={!isAuthenticated}>
+        <Button type="submit" disabled={!isAuthenticated} onClick={handleNextPage}>
           Próximo passo
           <ArrowRight />
         </Button>
