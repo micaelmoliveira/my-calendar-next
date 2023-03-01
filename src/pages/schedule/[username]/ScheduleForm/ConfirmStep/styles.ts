@@ -4,6 +4,7 @@ export const ConfirmForm = styled(Box, {
   maxWidth: 540,
   margin: '$6 auto 0',
   display: 'flex',
+  flexDirection: 'column',
   gap: '$4',
 
   label: {
@@ -37,9 +38,10 @@ export const FormHeader = styled('div', {
 })
 
 export const FormError = styled(Text, {
-
+  color: '#f75a68',
 })
 
 export const FormActions = styled('div', {
-
+  display: 'flex',
+  justifyContent: 'center'
 })
